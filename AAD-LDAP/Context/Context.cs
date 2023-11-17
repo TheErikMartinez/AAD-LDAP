@@ -24,7 +24,7 @@ namespace AAD_LDAP.Context
             DirectorySearcher ds = new DirectorySearcher(ad);
 
             //ds = new DirectorySearcher(ad);
-            //ds.Filter = "(&(objectCategory=User))";
+            ds.Filter = "(&(objectCategory=User))";
 
             ds.PropertiesToLoad.Add("displayName");
             ds.PropertiesToLoad.Add("sAMAccountName");
