@@ -40,15 +40,16 @@ namespace AAD_LDAP.Context
 
             foreach (SearchResult sr in results)
             {
-                User us = new User();
-                us.name = sr.Properties["displayName"][0].ToString();
-                us.sAMAccountName = sr.Properties["sAMAccountName"][0].ToString();
-                us.department = sr.Properties["department"][0].ToString();
-                us.mail = sr.Properties["mail"][0].ToString();
-                us.extensionAttribute = sr.Properties["extensionAttribute5"][0].ToString();
-                us.manager = sr.Properties["manager"][0].ToString();
+                    User us = new User();
 
-                users.Add(us);
+                    us.name = sr.Properties.Contains("displayName") ? sr.Properties["displayName"][0].ToString() : string.Empty;
+                    us.sAMAccountName = sr.Properties.Contains("sAMAccountName") ? sr.Properties["sAMAccountName"][0].ToString() : string.Empty;
+                    us.department = sr.Properties.Contains("department") ? sr.Properties["department"][0].ToString() : string.Empty;
+                    us.mail = sr.Properties.Contains("mail") ? sr.Properties["mail"][0].ToString() : string.Empty;
+                    us.extensionAttribute = sr.Properties.Contains("extensionattribute5") ? sr.Properties["extensionattribute5"][0].ToString() : string.Empty;
+                    us.manager = sr.Properties.Contains("manager") ? sr.Properties["manager"][0].ToString() : string.Empty;
+
+                    users.Add(us);
             }
             return users;
         }
