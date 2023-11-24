@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using AAD_LDAP.Context;
 using AAD_LDAP.Interfaces;
+using System.Security.Principal;
+using Newtonsoft.Json;
+using AAD_LDAP.Models;
 
 namespace AAD_LDAP.Controllers
 {
@@ -8,7 +11,6 @@ namespace AAD_LDAP.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        //private AdContext _context;
 
         private readonly IAdContext _context;
 
@@ -19,15 +21,12 @@ namespace AAD_LDAP.Controllers
         [HttpGet]
         public IActionResult GetUsers()
         {
-            //var valami = new AdContext();
-
             var res = _context.GetAllUsers();
 
             return Ok( res );
         }
 
         [HttpGet("{name}")]
-       // [Route("{name}")]
         public async Task<IActionResult> GetUser([FromRoute] string name)
         {
             var user = _context.GetAUser(name);
@@ -36,6 +35,28 @@ namespace AAD_LDAP.Controllers
                 return NotFound();
             }
             return Ok(user);
+        }
+
+        [HttpGet("external")]
+        public async Task<IActionResult> GetExtUsers()
+        {
+            
+                HttpClientHandler handler = new HttpClientHandler();
+                handler.UseDefaultCredentials = true;                 
+
+            HttpClient client = new HttpClient(handler);
+
+            HttpResponseMessage response = await client.GetAsync("https://auth.hungaria.koerber.de/AllUsers/get-all");
+
+            var jsonResponse = await response.Content.ReadAsStringAsync();
+
+            ExternalUsersList extUs = JsonConvert.DeserializeObject<ExternalUsersList>(jsonResponse);
+
+            handler.Dispose();
+            client.Dispose();
+
+            return Ok(extUs);
+            
         }
     }
     
