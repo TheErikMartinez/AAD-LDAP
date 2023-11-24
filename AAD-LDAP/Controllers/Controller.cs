@@ -25,6 +25,18 @@ namespace AAD_LDAP.Controllers
 
             return Ok( res );
         }
+
+        [HttpGet("{name}")]
+       // [Route("{name}")]
+        public async Task<IActionResult> GetUser([FromRoute] string name)
+        {
+            var user = _context.GetAUser(name);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            return Ok(user);
+        }
     }
     
 }

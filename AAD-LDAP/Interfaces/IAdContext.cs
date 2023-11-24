@@ -6,5 +6,7 @@ namespace AAD_LDAP.Interfaces
     public interface IAdContext
     {
         List<User> GetAllUsers();
+
+        User GetAUser(string userName);
     }
 }

@@ -8,7 +8,7 @@ namespace AAD_LDAP.Context
     public class AdContext : IAdContext
     {
         DirectoryEntry ad = new DirectoryEntry("LDAP://OU=Users,OU=Hauni Hungaria,DC=HUNGARIA,DC=KOERBER,DC=DE");
-       // DirectorySearcher ds = new DirectorySearcher(ad);
+        // DirectorySearcher ds = new DirectorySearcher(ad);
 
         //public AdContext()
         //{
@@ -17,6 +17,7 @@ namespace AAD_LDAP.Context
         //    DirectoryEntry ad = new DirectoryEntry();
         //    ad.Path = str;
         //}
+
 
         public List<User> GetAllUsers()
         {
@@ -54,17 +55,28 @@ namespace AAD_LDAP.Context
             return users;
         }
 
-        private void GetAUser(string userName)
+        public User GetAUser(string userName)
         {
-            DirectorySearcher ds = null;
+            DirectorySearcher ds = new DirectorySearcher(ad);
             SearchResult sr;
 
             // Build User Searcher
      //       ds = BuildUserSearcher(ad);
             // Set the filter to look for a specific user
-     //        ds.Filter = "(&(objectCategory=User)(objectClass=person)(name=" + userName + "))";
+            ds.Filter = "(&(objectCategory=User)(sAMAccountName=" + userName + "))";
 
             sr = ds.FindOne();
+
+            User us = new User();
+
+            us.name = sr.Properties.Contains("displayName") ? sr.Properties["displayName"][0].ToString() : string.Empty;
+            us.sAMAccountName = sr.Properties.Contains("sAMAccountName") ? sr.Properties["sAMAccountName"][0].ToString() : string.Empty;
+            us.department = sr.Properties.Contains("department") ? sr.Properties["department"][0].ToString() : string.Empty;
+            us.mail = sr.Properties.Contains("mail") ? sr.Properties["mail"][0].ToString() : string.Empty;
+            us.extensionAttribute = sr.Properties.Contains("extensionattribute5") ? sr.Properties["extensionattribute5"][0].ToString() : string.Empty;
+            us.manager = sr.Properties.Contains("manager") ? sr.Properties["manager"][0].ToString() : string.Empty;
+
+            return us;
 
             //if (sr != null)
             //{
