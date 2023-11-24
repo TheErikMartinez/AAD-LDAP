@@ -8,5 +8,7 @@ namespace AAD_LDAP.Interfaces
         List<User> GetAllUsers();
 
         User GetAUser(string userName);
+
+        User BuildUser(SearchResult import);
     }
 }
