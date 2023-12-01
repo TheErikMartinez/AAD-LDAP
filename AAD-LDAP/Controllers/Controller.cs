@@ -41,8 +41,8 @@ namespace AAD_LDAP.Controllers
         public async Task<IActionResult> GetExtUsers()
         {
             
-                HttpClientHandler handler = new HttpClientHandler();
-                handler.UseDefaultCredentials = true;                 
+            HttpClientHandler handler = new HttpClientHandler();
+            handler.UseDefaultCredentials = true;                 
 
             HttpClient client = new HttpClient(handler);
 

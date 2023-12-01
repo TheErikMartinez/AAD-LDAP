@@ -6,7 +6,7 @@
         public string Department { get; set; }
         public int Employeeid { get; set; }
         public string Mail { get; set; }
-        public Boolean Tiltott { get; set; }
+        public bool Tiltott { get; set; }
         public string Displayname { get; set; }
     }
 }
